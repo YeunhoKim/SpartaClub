@@ -6,10 +6,10 @@ from pymongo import MongoClient as mc
 client = mc('localhost', 27017)
 db = client.genie_music
 
-#User Agnet 입력
+#User Agent 입력
 headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
 
-# 2019.09.29일 1윌부터 200위 까지 Data 추출
+# 2019.09.29일 1위부터 200위 까지 Data 추출
 for page in range(1,5):
     #크롤링 초기 셋팅
     address = 'https://www.genie.co.kr/chart/top200?ditc=D&ymd=20190929&hh=10&rtm=N&pg={}'.format(page)
