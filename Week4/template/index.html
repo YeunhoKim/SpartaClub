@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <!--Webpage Title-->
+    <title>4주차 숙제 Index.html 김연호</title>
+
+    <!--Font-->
+    <link href="https://fonts.googleapis.com/css?family=Stylish&dispaly=swap" rel="stylesheet">
+
+    <!--Required meta tags-->
+    <meta charset="uft-9">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shirink-to fit=no">
+
+    <!--Bootstrap CSS-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!--JS-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!--JS Function-->
+    <script type="text/javascript">
+        // 주문 버튼
+        function order_confirm() {
+            var c_name = $('#customer-name').val();
+            var p_qty = $('#product_qty').val();
+            var c_phone = $('#phone').val();
+            var c_address = $('#address').val();
+            var item = 'EON_Core';
+            var total_price = p_qty * 900000;
+
+            $.ajax({
+                type: "POST",
+                url: "/order",
+                data: {
+                    name_give: c_name,
+                    count_give: p_qty,
+                    address_give: c_address,
+                    phone_give: c_phone,
+                    item_give: item
+                },
+                success: function(response) {
+                    if (response['result'] == 'success') {
+                        alert('주문완료 지불 총액은 ' + total_price + ' 입니다.');
+                        window.location.reload();
+                    }
+                }
+            })
+        }
+
+        //????
+        $(document).ready(function() {
+            $('#orders-box').html('');
+            listing();
+        });
+
+        //게시
+        function listing() {
+            $.ajax({
+                type: "GET",
+                url: "/order?item_give=EON_Core",
+                data: {},
+                success: function(response) {
+                    if (response['result'] == 'success') {
+                        let orders = response['orders'];
+                        for (let i = 0; i < orders.length; i++) {
+                            make_card(orders[i]['item'], orders[i]['name'], orders[i]['count'], orders[i]['address'], orders[i]['phone'])
+                        }
+                    } else {
+                        alert('주문 목록을 받아오지 못했습니다.');
+                    }
+                }
+            })
+        }
+
+        //카드만들기
+
+        function make_card(item, name, count, address, phone) {
+            let temp_html = '<tr>\
+                <td>' + item + '</td>\
+                <td>' + name + '</td>\
+                <td>' + count + '</td>\
+                <td>' + address + '</td>\
+                <td>' + phone + '</td>\
+                </td>';
+            $('#orders-box').append(temp_html);
+        }
+    </script>
+
+    <!--CSS Style-->
+    <style type="text/css">
+        * {
+            font-family: 'Stylish', sans-serif;
+        }
+        
+        .wrap {
+            margin: auto;
+            width: 900px;
+        }
+        
+        .title_bold {
+            font-weight: bold;
+        }
+        
+        .center {
+            margin: auto;
+            width: 50%
+        }
+        
+        .img {
+            background-image: url('http://divemagazine.co.uk/images/article-images/kit/Suunto/Suunto_eon_core/suunto_eoncore1000.jpg');
+            background-size: cover;
+            background-position: center;
+            width: 500px;
+            height: 300px;
+        }
+        
+        .align-center {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body class="wrap">
+    <!--Grid Start 8 rows X 3columns-->
+    <div class="container">
+
+        <!--first row start: image-->
+        <div class="row justify-content-md-center">
+
+            <!--Grid blank : first row X first column-->
+            <div class="col col-lg-2"></div>
+
+            <!--Grid Content : first row X second column-->
+            <div class="col-md-auto">
+                <div class="img"></div>
+            </div>
+
+            <!--Grid Blank : Right_first row X thisrd column-->
+            <div class="col col-lg-2"></div>
+        </div>
+        <!--first row end-->
+
+        <!--Second row : Product Summary-->
+        <div class="row justify-content-md-center">
+
+            <!--Grid blank :  second row X first column-->
+            <div class="col col-sm-2"></div>
+
+            <!--Grid Content : second row X second column-->
+            <div class="col-sm">
+                <a class="title_bold" style="font-size:2rem">Suunto EON Core</a>
+                <a>&nbsp;&nbsp;&nbsp;&nbsp;가격: 900,000원/개</a>
+            </div>
+            <!--Grid Blank : secodn row X third column-->
+            <div class="col col-sm-2"></div>
+        </div>
+        <!--Seoncd row end-->
+
+        <!--Third row : Product Introduction-->
+        <div class="row justify-content-md-center">
+
+            <!--Grid blank :  third row X first column-->
+            <div class="col col-sm-2"></div>
+
+            <!--Grid Content : third row X second column-->
+            <div class="col-sm">
+                <p>
+                    순토 이온 코어는 모든 레벨의 다이버들이 사용 가능한 컴퓨터 입니다. 뛰어난 가독성을 제공하는 컬러 대형 화면은 다이빙 정보를 한눈에 인식할 수 있고 어두운 환경에서 더욱 만족스러운 성능을 발휘 합니다. 이온 코어는 기본적으로 다이빙에 필요한 모든 정보를 제공합니다. 또한, 사용자가 원하는 정보만을 보여주시도 합니다. 화면은 이온스틸과 동일하지만 보다 컴패트해 졌으며, 가벼워 졌습니다. 기존의 무선 트랜스미터, 블루투스 등의 기능까지 적용된 최신
+                    컴퓨터 입니다.
+                </p>
+            </div>
+
+            <!--Grid Blank : third row X third column-->
+            <div class="col col-sm-2"></div>
+        </div>
+        <!--Third row end-->
+
+        <!--Order Forms start-->
+
+        <!--Fourth row start-->
+        <!--Input Name start-->
+        <div class="row justify-content-md-center">
+
+            <!--Grid blank :  third row X first column-->
+            <div class="col col-sm-2"></div>
+
+            <!--Grid Content : third row X second column-->
+            <div class="col-sm">
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">주문자 이름</span>
+                    </div>
+                    <input id="customer-name" type="text" class="form-control" placeholder="이름을 입력해 주세요^^" aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+            </div>
+
+            <!--Grid Blank : third row X third column-->
+            <div class="col col-sm-2"></div>
+        </div>
+        <!--Input Name end-->
+        <!--Fourth row end-->
+
+        <!--Fifth row start-->
+        <!--Input Quantities start-->
+        <div class="row justify-content-md-center">
+
+            <!--Grid blank :  third row X first column-->
+            <div class="col col-sm-2"></div>
+
+            <!--Grid Content : third row X second column-->
+            <div class="col-sm">
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelect01">수량</label>
+                    </div>
+                    <select class="custom-select" id="product_qty">
+                                  <option selected>--수량을 입력해 주세요--</option>
+                                  <option value="1">1</option>
+                                  <option value="2">2</option>
+                                  <option value="3">3</option>
+                    </select>
+                </div>
+            </div>
+
+            <!--Grid Blank : third row X third column-->
+            <div class="col col-sm-2"></div>
+        </div>
+        <!--Input Quantities end-->
+        <!--Fifth row end-->
+
+        <!--Sixth row start-->
+        <!--Input Address start-->
+        <div class="row justify-content-md-center">
+
+            <!--Grid blank :  third row X first column-->
+            <div class="col col-sm-2"></div>
+
+            <!--Grid Content : third row X second column-->
+            <div class="col-sm">
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">주소</span>
+                    </div>
+
+                    <input id="address" type="text" class="form-control" placeholder="주소를 입력해 주세요^^" aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+            </div>
+
+            <!--Grid Blank : third row X third column-->
+            <div class="col col-sm-2"></div>
+        </div>
+        <!--Input Address end-->
+        <!--Sixth row end-->
+
+        <!--Seventh row start-->
+        <!--Input Phone Number start-->
+        <div class="row justify-content-md-center">
+
+            <!--Grid blank :  third row X first column-->
+            <div class="col col-sm-2"></div>
+
+            <!--Grid Content : third row X second column-->
+            <div class="col-sm">
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">전화번호</span>
+                    </div>
+
+                    <input id="phone" type="text" class="form-control" placeholder="전화번호를 입력해 주세요^^" aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+            </div>
+
+            <!--Grid Blank : third row X third column-->
+            <div class="col col-sm-2"></div>
+        </div>
+        <!--Input Phone Number end-->
+        <!--Seventh row end-->
+
+        <!--Eighth row start-->
+        <!--Order Button start-->
+        <div class="row justify-content-md-center">
+
+            <!--Grid blank :  third row X first column-->
+            <div class="col col-lg-2"></div>
+
+            <!--Grid Content : third row X second column-->
+            <div class="col-sm">
+                <div class="align-center">
+                    <button onclick="order_confirm()" type="button" class="btn btn-primary">주문하기</button>
+                </div>
+            </div>
+            <!--Grid Blank : third row X third column-->
+            <div class="col col-lg-2"></div>
+        </div>
+        <!--Order Button end-->
+        <!--Eighth row end-->
+
+        <div class="orders">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">상품명</th>
+                        <th scope="col">이름</th>
+                        <th scope="col">수량</th>
+                        <th scope="col">주소</th>
+                        <th scope="col">전화번호</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-box">
+
+                </tbody>
+
+            </table>
+        </div>
+        <!--Grid End-->
+
+</body>
+
+</html>
